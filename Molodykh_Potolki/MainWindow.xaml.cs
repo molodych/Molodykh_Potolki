@@ -35,7 +35,31 @@ namespace Molodykh_Potolki
 
         private void AuthButton_Click(object sender, RoutedEventArgs e)
         {
+            string _login = LoginTextBox.Text;
+            string _password = PasswordTextBox.Password;
 
+            if (!string.IsNullOrEmpty(_login) && !string.IsNullOrEmpty(_password))
+            {
+                using (var db = new Entities.MolodykhPotolkiEntities())
+                {
+                    var _currentAccount = from ac in db.Пользователи.ToList()
+                                          where ac.логин == _login && ac.пароль == _password
+                                          select ac;
+
+                    if (_currentAccount.ToArray().Length > 0)
+                    {
+                        MessageBox.Show("Аккаунт найден!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ползователь не найден! Проверьте правильность логина и пароля");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Заполните все пустые поля!");
+            }
         }
     }
 }
