@@ -7,6 +7,28 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Rectangle Fill="#4D78A5" Grid.Row="0"/>
+        <Image Source="Resource\logo.png" Grid.Row="0" HorizontalAlignment="Left" Margin="15, 5, 5, 5"/>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Авторизация">
+                <TabItem.Content>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="500">
+                        <Label Content="Введите логин:"/>
+                        <TextBox Height="25" FontSize="18"/>
+                        <Label Content="Введите пароль:"/>
+                        <PasswordBox Height="25" FontSize="18"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Name="AuthButton" Content="Вход" Height="50" Width="150" Margin="5, 5, 10, 5" Click="AuthButton_Click"/>
+                            <Button Name="ExitButton" Content="Завершить работу" Height="50" Width="150" Margin="5" Click="ExitButton_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Регистрация"/>
+        </TabControl>
     </Grid>
 </Window>

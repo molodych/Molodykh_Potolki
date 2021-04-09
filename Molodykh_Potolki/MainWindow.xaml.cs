@@ -24,5 +24,18 @@ namespace Molodykh_Potolki
         {
             InitializeComponent();
         }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Выйти из приложения?", "", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
+        private void AuthButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
