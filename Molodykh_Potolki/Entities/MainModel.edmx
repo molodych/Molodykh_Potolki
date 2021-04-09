@@ -1,0 +1,523 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище MolodykhPotolkiModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Заказ">
+          <Key>
+            <PropertyRef Name="код_заказа" />
+          </Key>
+          <Property Name="код_заказа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="дата" Type="date" />
+          <Property Name="код_клиента" Type="int" Nullable="false" />
+          <Property Name="срок_дни" Type="int" Nullable="false" />
+          <Property Name="дата_изготовления" Type="date" />
+          <Property Name="дата_монтажа" Type="date" />
+          <Property Name="сумма_потолка" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Клиент">
+          <Key>
+            <PropertyRef Name="код_клиента" />
+          </Key>
+          <Property Name="код_клиента" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="фамилия" Type="nvarchar" MaxLength="20" />
+          <Property Name="имя" Type="nvarchar" MaxLength="20" />
+          <Property Name="отчество" Type="nvarchar" MaxLength="20" />
+          <Property Name="улица" Type="nvarchar" MaxLength="20" />
+          <Property Name="дом" Type="nvarchar" MaxLength="20" />
+          <Property Name="корпус" Type="nvarchar" MaxLength="20" />
+          <Property Name="квартира" Type="nvarchar" MaxLength="20" />
+          <Property Name="телефон" Type="nvarchar" MaxLength="20" />
+          <Property Name="дата_рождения" Type="date" />
+        </EntityType>
+        <EntityType Name="Марка">
+          <Key>
+            <PropertyRef Name="код_марки" />
+          </Key>
+          <Property Name="код_марки" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="название_марки" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="код_производителя" Type="int" Nullable="false" />
+          <Property Name="количество_потолков" Type="int" />
+        </EntityType>
+        <EntityType Name="Пользователи">
+          <Key>
+            <PropertyRef Name="код_пользователя" />
+          </Key>
+          <Property Name="код_пользователя" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="логин" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="пароль" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="код_роли" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Потолок">
+          <Key>
+            <PropertyRef Name="код_потолка" />
+          </Key>
+          <Property Name="код_потолка" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="код_марки" Type="int" Nullable="false" />
+          <Property Name="код_фактуры" Type="int" Nullable="false" />
+          <Property Name="цена_метр" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Производитель">
+          <Key>
+            <PropertyRef Name="код_производителя" />
+          </Key>
+          <Property Name="код_производителя" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="название_производителя" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Роль_пользователя">
+          <Key>
+            <PropertyRef Name="код_роли" />
+          </Key>
+          <Property Name="код_роли" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="название" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6013: Первичный ключ в таблице или представлении "MolodykhPotolki.dbo.Список_потолков" не определен, его не удалось вывести. Эта таблица или представление исключены. Чтобы использовать сущность, необходимо проверить схему, добавить правильные ключи и раскомментировать ее.
+        <EntityType Name="Список_потолков">
+          <Property Name="код_заказа" Type="int" />
+          <Property Name="код_потолка" Type="int" />
+          <Property Name="площадь" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="количество_углов" Type="int" />
+        </EntityType>-->
+        <EntityType Name="Фактура">
+          <Key>
+            <PropertyRef Name="код_фактуры" />
+          </Key>
+          <Property Name="код_фактуры" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="название_фактуры" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="количество_потолков" Type="int" />
+        </EntityType>
+        <Association Name="FK_Заказ_Клиент">
+          <End Role="Клиент" Type="Self.Клиент" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиент">
+              <PropertyRef Name="код_клиента" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="код_клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Марка_Производитель">
+          <End Role="Производитель" Type="Self.Производитель" Multiplicity="1" />
+          <End Role="Марка" Type="Self.Марка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Производитель">
+              <PropertyRef Name="код_производителя" />
+            </Principal>
+            <Dependent Role="Марка">
+              <PropertyRef Name="код_производителя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Роль_пользователя">
+          <End Role="Роль_пользователя" Type="Self.Роль_пользователя" Multiplicity="1" />
+          <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Роль_пользователя">
+              <PropertyRef Name="код_роли" />
+            </Principal>
+            <Dependent Role="Пользователи">
+              <PropertyRef Name="код_роли" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Потолок_Марка">
+          <End Role="Марка" Type="Self.Марка" Multiplicity="1" />
+          <End Role="Потолок" Type="Self.Потолок" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Марка">
+              <PropertyRef Name="код_марки" />
+            </Principal>
+            <Dependent Role="Потолок">
+              <PropertyRef Name="код_марки" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Потолок_Фактура">
+          <End Role="Фактура" Type="Self.Фактура" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Потолок" Type="Self.Потолок" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Фактура">
+              <PropertyRef Name="код_фактуры" />
+            </Principal>
+            <Dependent Role="Потолок">
+              <PropertyRef Name="код_фактуры" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Ошибки, обнаруженные при создании:
+ошибка 6004: Невозможно найти таблицу "MolodykhPotolki.dbo.Список_потолков", на которую ссылается связь.
+        <Association Name="FK_Список_потолков_Заказ" />-->
+        <!--Ошибки, обнаруженные при создании:
+ошибка 6004: Невозможно найти таблицу "MolodykhPotolki.dbo.Список_потолков", на которую ссылается связь.
+        <Association Name="FK_Список_потолков_Потолок" />-->
+        <EntityContainer Name="Хранилище MolodykhPotolkiModelContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Заказ" EntityType="Self.Заказ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Клиент" EntityType="Self.Клиент" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Марка" EntityType="Self.Марка" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Пользователи" EntityType="Self.Пользователи" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Потолок" EntityType="Self.Потолок" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Производитель" EntityType="Self.Производитель" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Роль_пользователя" EntityType="Self.Роль_пользователя" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Фактура" EntityType="Self.Фактура" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Заказ_Клиент" Association="Self.FK_Заказ_Клиент">
+            <End Role="Клиент" EntitySet="Клиент" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Марка_Производитель" Association="Self.FK_Марка_Производитель">
+            <End Role="Производитель" EntitySet="Производитель" />
+            <End Role="Марка" EntitySet="Марка" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Роль_пользователя" Association="Self.FK_Пользователи_Роль_пользователя">
+            <End Role="Роль_пользователя" EntitySet="Роль_пользователя" />
+            <End Role="Пользователи" EntitySet="Пользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Потолок_Марка" Association="Self.FK_Потолок_Марка">
+            <End Role="Марка" EntitySet="Марка" />
+            <End Role="Потолок" EntitySet="Потолок" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Потолок_Фактура" Association="Self.FK_Потолок_Фактура">
+            <End Role="Фактура" EntitySet="Фактура" />
+            <End Role="Потолок" EntitySet="Потолок" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MolodykhPotolkiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Заказ">
+          <Key>
+            <PropertyRef Name="код_заказа" />
+          </Key>
+          <Property Name="код_заказа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="дата" Type="DateTime" Precision="0" />
+          <Property Name="код_клиента" Type="Int32" Nullable="false" />
+          <Property Name="срок_дни" Type="Int32" Nullable="false" />
+          <Property Name="дата_изготовления" Type="DateTime" Precision="0" />
+          <Property Name="дата_монтажа" Type="DateTime" Precision="0" />
+          <Property Name="сумма_потолка" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Клиент" Relationship="Self.FK_Заказ_Клиент" FromRole="Заказ" ToRole="Клиент" />
+        </EntityType>
+        <EntityType Name="Клиент">
+          <Key>
+            <PropertyRef Name="код_клиента" />
+          </Key>
+          <Property Name="код_клиента" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="фамилия" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="имя" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="отчество" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="улица" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="дом" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="корпус" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="квартира" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="телефон" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="дата_рождения" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Заказ" Relationship="Self.FK_Заказ_Клиент" FromRole="Клиент" ToRole="Заказ" />
+        </EntityType>
+        <EntityType Name="Марка">
+          <Key>
+            <PropertyRef Name="код_марки" />
+          </Key>
+          <Property Name="код_марки" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="название_марки" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="код_производителя" Type="Int32" Nullable="false" />
+          <Property Name="количество_потолков" Type="Int32" />
+          <NavigationProperty Name="Производитель" Relationship="Self.FK_Марка_Производитель" FromRole="Марка" ToRole="Производитель" />
+          <NavigationProperty Name="Потолок" Relationship="Self.FK_Потолок_Марка" FromRole="Марка" ToRole="Потолок" />
+        </EntityType>
+        <EntityType Name="Пользователи">
+          <Key>
+            <PropertyRef Name="код_пользователя" />
+          </Key>
+          <Property Name="код_пользователя" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="логин" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="пароль" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="код_роли" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Роль_пользователя" Relationship="Self.FK_Пользователи_Роль_пользователя" FromRole="Пользователи" ToRole="Роль_пользователя" />
+        </EntityType>
+        <EntityType Name="Потолок">
+          <Key>
+            <PropertyRef Name="код_потолка" />
+          </Key>
+          <Property Name="код_потолка" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="код_марки" Type="Int32" Nullable="false" />
+          <Property Name="код_фактуры" Type="Int32" Nullable="false" />
+          <Property Name="цена_метр" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Марка" Relationship="Self.FK_Потолок_Марка" FromRole="Потолок" ToRole="Марка" />
+          <NavigationProperty Name="Фактура" Relationship="Self.FK_Потолок_Фактура" FromRole="Потолок" ToRole="Фактура" />
+        </EntityType>
+        <EntityType Name="Производитель">
+          <Key>
+            <PropertyRef Name="код_производителя" />
+          </Key>
+          <Property Name="код_производителя" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="название_производителя" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Марка" Relationship="Self.FK_Марка_Производитель" FromRole="Производитель" ToRole="Марка" />
+        </EntityType>
+        <EntityType Name="Роль_пользователя">
+          <Key>
+            <PropertyRef Name="код_роли" />
+          </Key>
+          <Property Name="код_роли" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="название" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Роль_пользователя" FromRole="Роль_пользователя" ToRole="Пользователи" />
+        </EntityType>
+        <EntityType Name="Фактура">
+          <Key>
+            <PropertyRef Name="код_фактуры" />
+          </Key>
+          <Property Name="код_фактуры" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="название_фактуры" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="количество_потолков" Type="Int32" />
+          <NavigationProperty Name="Потолок" Relationship="Self.FK_Потолок_Фактура" FromRole="Фактура" ToRole="Потолок" />
+        </EntityType>
+        <Association Name="FK_Заказ_Клиент">
+          <End Role="Клиент" Type="Self.Клиент" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиент">
+              <PropertyRef Name="код_клиента" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="код_клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Марка_Производитель">
+          <End Role="Производитель" Type="Self.Производитель" Multiplicity="1" />
+          <End Role="Марка" Type="Self.Марка" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Производитель">
+              <PropertyRef Name="код_производителя" />
+            </Principal>
+            <Dependent Role="Марка">
+              <PropertyRef Name="код_производителя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Потолок_Марка">
+          <End Role="Марка" Type="Self.Марка" Multiplicity="1" />
+          <End Role="Потолок" Type="Self.Потолок" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Марка">
+              <PropertyRef Name="код_марки" />
+            </Principal>
+            <Dependent Role="Потолок">
+              <PropertyRef Name="код_марки" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Роль_пользователя">
+          <End Role="Роль_пользователя" Type="Self.Роль_пользователя" Multiplicity="1" />
+          <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Роль_пользователя">
+              <PropertyRef Name="код_роли" />
+            </Principal>
+            <Dependent Role="Пользователи">
+              <PropertyRef Name="код_роли" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Потолок_Фактура">
+          <End Role="Фактура" Type="Self.Фактура" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Потолок" Type="Self.Потолок" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Фактура">
+              <PropertyRef Name="код_фактуры" />
+            </Principal>
+            <Dependent Role="Потолок">
+              <PropertyRef Name="код_фактуры" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MolodykhPotolkiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Заказ" EntityType="Self.Заказ" />
+          <EntitySet Name="Клиент" EntityType="Self.Клиент" />
+          <EntitySet Name="Марка" EntityType="Self.Марка" />
+          <EntitySet Name="Пользователи" EntityType="Self.Пользователи" />
+          <EntitySet Name="Потолок" EntityType="Self.Потолок" />
+          <EntitySet Name="Производитель" EntityType="Self.Производитель" />
+          <EntitySet Name="Роль_пользователя" EntityType="Self.Роль_пользователя" />
+          <EntitySet Name="Фактура" EntityType="Self.Фактура" />
+          <AssociationSet Name="FK_Заказ_Клиент" Association="Self.FK_Заказ_Клиент">
+            <End Role="Клиент" EntitySet="Клиент" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Марка_Производитель" Association="Self.FK_Марка_Производитель">
+            <End Role="Производитель" EntitySet="Производитель" />
+            <End Role="Марка" EntitySet="Марка" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Потолок_Марка" Association="Self.FK_Потолок_Марка">
+            <End Role="Марка" EntitySet="Марка" />
+            <End Role="Потолок" EntitySet="Потолок" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Роль_пользователя" Association="Self.FK_Пользователи_Роль_пользователя">
+            <End Role="Роль_пользователя" EntitySet="Роль_пользователя" />
+            <End Role="Пользователи" EntitySet="Пользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Потолок_Фактура" Association="Self.FK_Потолок_Фактура">
+            <End Role="Фактура" EntitySet="Фактура" />
+            <End Role="Потолок" EntitySet="Потолок" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище MolodykhPotolkiModelContainer" CdmEntityContainer="MolodykhPotolkiEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Заказ">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Заказ">
+              <MappingFragment StoreEntitySet="Заказ">
+                <ScalarProperty Name="код_заказа" ColumnName="код_заказа" />
+                <ScalarProperty Name="дата" ColumnName="дата" />
+                <ScalarProperty Name="код_клиента" ColumnName="код_клиента" />
+                <ScalarProperty Name="срок_дни" ColumnName="срок_дни" />
+                <ScalarProperty Name="дата_изготовления" ColumnName="дата_изготовления" />
+                <ScalarProperty Name="дата_монтажа" ColumnName="дата_монтажа" />
+                <ScalarProperty Name="сумма_потолка" ColumnName="сумма_потолка" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Клиент">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Клиент">
+              <MappingFragment StoreEntitySet="Клиент">
+                <ScalarProperty Name="код_клиента" ColumnName="код_клиента" />
+                <ScalarProperty Name="фамилия" ColumnName="фамилия" />
+                <ScalarProperty Name="имя" ColumnName="имя" />
+                <ScalarProperty Name="отчество" ColumnName="отчество" />
+                <ScalarProperty Name="улица" ColumnName="улица" />
+                <ScalarProperty Name="дом" ColumnName="дом" />
+                <ScalarProperty Name="корпус" ColumnName="корпус" />
+                <ScalarProperty Name="квартира" ColumnName="квартира" />
+                <ScalarProperty Name="телефон" ColumnName="телефон" />
+                <ScalarProperty Name="дата_рождения" ColumnName="дата_рождения" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Марка">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Марка">
+              <MappingFragment StoreEntitySet="Марка">
+                <ScalarProperty Name="код_марки" ColumnName="код_марки" />
+                <ScalarProperty Name="название_марки" ColumnName="название_марки" />
+                <ScalarProperty Name="код_производителя" ColumnName="код_производителя" />
+                <ScalarProperty Name="количество_потолков" ColumnName="количество_потолков" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Пользователи">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Пользователи">
+              <MappingFragment StoreEntitySet="Пользователи">
+                <ScalarProperty Name="код_пользователя" ColumnName="код_пользователя" />
+                <ScalarProperty Name="логин" ColumnName="логин" />
+                <ScalarProperty Name="пароль" ColumnName="пароль" />
+                <ScalarProperty Name="код_роли" ColumnName="код_роли" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Потолок">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Потолок">
+              <MappingFragment StoreEntitySet="Потолок">
+                <ScalarProperty Name="код_потолка" ColumnName="код_потолка" />
+                <ScalarProperty Name="код_марки" ColumnName="код_марки" />
+                <ScalarProperty Name="код_фактуры" ColumnName="код_фактуры" />
+                <ScalarProperty Name="цена_метр" ColumnName="цена_метр" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Производитель">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Производитель">
+              <MappingFragment StoreEntitySet="Производитель">
+                <ScalarProperty Name="код_производителя" ColumnName="код_производителя" />
+                <ScalarProperty Name="название_производителя" ColumnName="название_производителя" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Роль_пользователя">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Роль_пользователя">
+              <MappingFragment StoreEntitySet="Роль_пользователя">
+                <ScalarProperty Name="код_роли" ColumnName="код_роли" />
+                <ScalarProperty Name="название" ColumnName="название" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Фактура">
+            <EntityTypeMapping TypeName="MolodykhPotolkiModel.Фактура">
+              <MappingFragment StoreEntitySet="Фактура">
+                <ScalarProperty Name="код_фактуры" ColumnName="код_фактуры" />
+                <ScalarProperty Name="название_фактуры" ColumnName="название_фактуры" />
+                <ScalarProperty Name="количество_потолков" ColumnName="количество_потолков" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
