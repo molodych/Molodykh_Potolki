@@ -48,7 +48,9 @@ namespace Molodykh_Potolki
 
                     if (_currentAccount.ToArray().Length > 0)
                     {
-                        MessageBox.Show("Аккаунт найден!");
+                        MessageBox.Show("Добро пожаловать!");
+                        new Windows.WorkWindow(_currentAccount.ToList()[0]).Show();
+                        this.Close();
                     }
                     else
                     {
