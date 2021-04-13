@@ -11,7 +11,7 @@
     <Grid>
         <Menu>
             <MenuItem Header="Справочники">
-                <MenuItem Header="Фактура"/>
+                <MenuItem Name="FacturaMenuItem" Header="Фактура" Click="FacturaMenuItem_Click"/>
                 <MenuItem Header="Производитель"/>
                 <MenuItem Header="Марка"/>
             </MenuItem>
@@ -24,5 +24,6 @@
             </MenuItem>
             <MenuItem Header="Выход"/>
         </Menu>
+        <Frame Name="AdminFrame"/>
     </Grid>
 </Page>

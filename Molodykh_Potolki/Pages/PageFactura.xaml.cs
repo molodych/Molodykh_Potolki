@@ -16,18 +16,18 @@ using System.Windows.Shapes;
 namespace Molodykh_Potolki.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для PageMenuAdmin.xaml
+    /// Логика взаимодействия для PageFactura.xaml
     /// </summary>
-    public partial class PageMenuAdmin : Page
+    public partial class PageFactura : Page
     {
-        public PageMenuAdmin()
+        public PageFactura()
         {
             InitializeComponent();
-        }
 
-        private void FacturaMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            AdminFrame.Navigate(new Pages.PageFactura());
+            using (var db = new Entities.MolodykhPotolkiEntities())
+            {
+                FacturaDataGrid.ItemsSource = db.Фактура.ToList();
+            }
         }
     }
 }
