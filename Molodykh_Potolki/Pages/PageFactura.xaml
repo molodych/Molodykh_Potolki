@@ -14,18 +14,12 @@
             <RowDefinition/>
             <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
-        <DataGrid Name="FacturaDataGrid" Grid.Row="1" AutoGenerateColumns="False" ColumnHeaderHeight="25">
+        <DataGrid Name="FacturaDataGrid" Grid.Row="1" AutoGenerateColumns="False" ColumnHeaderHeight="25" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Код фактуры" Binding="{Binding код_фактуры}" Width="auto"/>
-                <DataGridTextColumn Header="Название фактуры" Binding="{Binding название_фактуры}" Width="auto"/>
-                <DataGridTemplateColumn Width="auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="Изменить"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Название фактуры" Binding="{Binding название_фактуры}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Name="EditFacturaButton" Content="Изменить" Grid.Row="3" Height="25" Width="100" HorizontalAlignment="Right" Margin="15" Click="EditFacturaButton_Click"/>
     </Grid>
 </Page>

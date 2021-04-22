@@ -29,5 +29,10 @@ namespace Molodykh_Potolki.Pages
                 FacturaDataGrid.ItemsSource = db.Фактура.ToList();
             }
         }
+
+        private void EditFacturaButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show($"{FacturaDataGrid.SelectedCells[0]}");
+        }
     }
 }
